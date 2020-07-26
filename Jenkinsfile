@@ -1,21 +1,10 @@
 pipeline {
-	agent any
+    agent any
     stages {
-        stage ('Build Backend') {
+        stage ('Just Test') {
             steps {
-                bat 'mvn clean package -DskipTests=true'
-            }
-        }
-        stage ('Unit tests') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-        stage('Deploy Backend') {
-            steps {
-                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target\\tasks-backend.war'
+                bat 'echo deu certo'
             }
         }
     }
 }
-
