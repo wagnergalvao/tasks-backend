@@ -18,8 +18,10 @@ pipeline {
         }
         stage('API Test') {
         	steps {
-        		git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-api-tests'
-        		bat 'mvn test'
+				dir('api-test') {
+					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-api-tests'
+					bat 'mvn test'
+				}
         	}
         }
     }
