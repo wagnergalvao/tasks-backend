@@ -24,5 +24,14 @@ pipeline {
 				}
         	}
         }
+        stage('Deploy Frontend') {
+            steps {
+				dir('frontend') {
+					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-frontend'
+	                bat 'mvn clean package'
+	                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks', war: 'target\\tasks.war'
+				}
+            }
+        }
     }
 }
