@@ -4,17 +4,17 @@ pipeline {
         skipStagesAfterUnstable()
     }
     stages {
-        stage('Build') { 
+        stage ('Build') { 
             steps { 
 				bat 'echo Build'
             }
         }
-        stage('Test'){
+        stage ('Test') {
             steps {
 				bat 'echo Test'
             }
         }
-        stage('Deploy') {
+        stage ('Deploy') {
             steps {
 				bat 'echo Deploy'
             }
