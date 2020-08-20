@@ -33,5 +33,13 @@ pipeline {
 				}
             }
         }
+        stage('Functional Test') {
+        	steps {
+				dir('functional-test') {
+					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-functional-test'
+					bat 'mvn test'
+				}
+        	}
+        }
     }
 }
