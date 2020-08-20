@@ -1,22 +1,36 @@
-pipeline { 
-    agent any 
-    options {
-        skipStagesAfterUnstable()
-    }
+pipeline {
+  	agent any
     stages {
-        stage ('Build') { 
-            steps { 
-				bat 'echo Build'
+        stage('Build Backend') {
+            steps {
+                bat 'mvn clean package -DskipTests=true'
             }
         }
-        stage ('Test') {
+        stage('Unit tests') {
             steps {
-				bat 'echo Test'
+                bat 'mvn test'
             }
         }
-        stage ('Deploy') {
+        stage('Deploy Backend') {
             steps {
-				bat 'echo Deploy'
+                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target\\tasks-backend.war'
+            }
+        }
+        stage('API Test') {
+        	steps {
+				dir('api-test') {
+					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-api-tests'
+					bat 'mvn test'
+				}
+        	}
+        }
+        stage('Deploy Frontend') {
+            steps {
+				dir('frontend') {
+					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-frontend'
+	                bat 'mvn clean package'
+	                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks', war: 'target\\tasks.war'
+				}
             }
         }
     }
