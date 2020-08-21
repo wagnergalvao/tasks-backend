@@ -7,8 +7,8 @@ pipeline {
     stages {{
         stage ('Initialize') {
             steps {
-                bat echo "PATH = ${PATH}"
-				bat echo "MAVEN_HOME = ${MAVEN_HOME}"
+				bat {it -> echo "PATH = ${PATH}"}
+				bat {it -> echo "MAVEN_HOME = ${MAVEN_HOME}"}
             }
         }
         stage('Build Backend') {
