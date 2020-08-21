@@ -1,9 +1,18 @@
 pipeline {
-  	agent any
-	  environment {
-		  PATH = "${PATH}"
-	  }
-    stages {
+    agent any
+    tools {
+        maven 'Maven 3.6.3'
+        jdk 'jdk8'
+    }
+    stages {{
+        stage ('Initialize') {
+            steps {
+                bat '''
+                    echo "PATH = ${PATH}"
+                    echo "MAVEN_HOME = ${MAVEN_HOME}"
+                '''
+            }
+        }
         stage('Build Backend') {
             steps {
                 bat 'mvn clean package -DskipTests=true'
