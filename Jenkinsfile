@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven 3.6.3'
-        jdk 'jdk8'
+    environment {
+		PATH = "${PATH}"
+        MAVEN_HOME = "${MAVEN_HOME}"
     }
-    stages {{
-        stage ('Initialize') {
+    stages {
+		       stage ('Initialize') {
             steps {
 				bat 'echo "PATH = ${PATH}"'
 				bat 'echo "MAVEN_HOME = ${MAVEN_HOME}"'
@@ -51,5 +51,5 @@ pipeline {
 				}
         	}
         }
-    }
+	}
 }
