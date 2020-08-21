@@ -7,10 +7,10 @@ pipeline {
     stages {{
         stage ('Initialize') {
             steps {
-                bat '''
+                bat {it -> '''
                     echo "PATH = ${PATH}"
                     echo "MAVEN_HOME = ${MAVEN_HOME}"
-                '''
+                '''}
             }
         }
         stage('Build Backend') {
