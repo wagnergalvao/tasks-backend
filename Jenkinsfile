@@ -1,18 +1,6 @@
 pipeline {
     agent any
-    tools {
-        maven 'MAVEN_LOCAL'
-        jdk 'JAVA_LOCAL'
-    }
     stages {
-        stage ('Initialize') {
-            steps {
-                sh """
-                    echo "PATH = ${PATH}"
-                    echo "MAVEN_HOME = ${MAVEN_HOME}"
-                """
-            }
-        }
         stage('Build Backend') {
             steps {
                 sh 'mvn clean package -DskipTests=true'
@@ -24,9 +12,8 @@ pipeline {
             }
         }
         stage('Deploy Backend') {
-            steps {
-                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target\\tasks-backend.war'
-            }
+            steps {deploy adapters: [tomcat8(credentialsId: 'tomcat_login', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
+			}
         }
         stage('API Test') {
         	steps {
