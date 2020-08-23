@@ -5,6 +5,14 @@ pipeline {
         jdk 'JAVA_LOCAL'
     }
     stages {
+        stage ('Initialize') {
+            steps {
+                sh """
+                    echo "PATH = ${PATH}"
+                    echo "MAVEN_HOME = ${MAVEN_HOME}"
+                """
+            }
+        }
         stage('Build Backend') {
             steps {
                 sh 'mvn clean package -DskipTests=true'
