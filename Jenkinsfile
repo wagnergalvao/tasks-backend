@@ -5,22 +5,14 @@ pipeline {
         jdk 'JAVA_LOCAL'
     }
     stages {
-        stage ('Initialize') {
-            steps {
-                bat """
-                    echo "PATH = ${PATH}"
-                    echo "MAVEN_HOME = ${MAVEN_HOME}"
-                """
-            }
-        }
         stage('Build Backend') {
             steps {
-                bat 'mvn clean package -DskipTests=true'
+                sh 'mvn clean package -DskipTests=true'
             }
         }
         stage('Unit tests') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
         stage('Deploy Backend') {
@@ -32,7 +24,7 @@ pipeline {
         	steps {
 				dir('api-test') {
 					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-api-tests'
-					bat 'mvn test'
+					sh 'mvn test'
 				}
         	}
         }
@@ -40,7 +32,7 @@ pipeline {
             steps {
 				dir('frontend') {
 					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-frontend'
-	                bat 'mvn clean package'
+	                sh 'mvn clean package'
 	                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks', war: 'target\\tasks.war'
 				}
             }
@@ -49,7 +41,7 @@ pipeline {
         	steps {
 				dir('functional-test') {
 					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-functional-test'
-					bat 'mvn test'
+					sh 'mvn test'
 				}
         	}
         }
