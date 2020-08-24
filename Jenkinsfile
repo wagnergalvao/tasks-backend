@@ -12,7 +12,8 @@ pipeline {
             }
         }
         stage('Deploy Backend') {
-            steps {deploy adapters: [tomcat8(credentialsId: 'tomcat_login', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
+            steps {
+				deploy adapters: [tomcat8(credentialsId: 'tomcat_login', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks-backend', war: 'target/tasks-backend.war'
 			}
         }
         stage('API Test') {
@@ -28,7 +29,7 @@ pipeline {
 				dir('frontend') {
 					git credentialsId: 'gitlab_login', url: 'https://gitlab.com/WagnerGalvao/tasks-frontend'
 	                sh 'mvn clean package'
-	                deploy adapters: [tomcat8(credentialsId: 'TomcatLogin', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks', war: 'target\\tasks.war'
+					deploy adapters: [tomcat8(credentialsId: 'tomcat_login', path: '', url: 'http://localhost:8081/')], contextPath: 'tasks', war: 'target/tasks.war'
 				}
             }
         }
