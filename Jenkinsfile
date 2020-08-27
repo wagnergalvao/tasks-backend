@@ -41,11 +41,18 @@ pipeline {
 				}
         	}
         }
-        stage('Deploy Produção') {
+        stage('Deploy Producao') {
             steps {
 				sh 'docker-compose build'
 				sh 'docker-compose up -d'
 			}
+        }
+        stage('Health Check') {
+        	steps {
+				dir('functional-test') {
+					sh 'mvn verify -Dskip.surefire.tests'
+				}
+        	}
         }
 	}
 }
