@@ -3,9 +3,7 @@ pipeline {
     stages {
         stage('Build Backend') {
             steps {
-				bat label: '', 
-					script: 'mvn clean package -DskipTests=true'
-//                sh 'mvn clean package -DskipTests=true'
+                sh 'mvn clean package -DskipTests=true'
             }
         }
         stage('Unit tests') {
